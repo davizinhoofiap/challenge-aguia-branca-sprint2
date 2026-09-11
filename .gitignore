@@ -1,0 +1,44 @@
+# ==============================================================================
+# .gitignore - GRUPO AGUIA BRANCA (SPRINT 2 - FIAP)
+# ==============================================================================
+
+# --- Sistema Operacional & Editores Locais ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+
+# --- Android Studio / Gradle (/app-mobile) ---
+.gradle/
+**/build/
+app-mobile/.gradle/
+app-mobile/build/
+app-mobile/app/build/
+app-mobile/local.properties
+app-mobile/.idea/
+**/.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+**/*.iml
+
+# --- Backend .NET 8 (/backend) ---
+**/bin/
+**/obj/
+backend/src/bin/
+backend/src/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+**/.vs/
+
+# --- Segredos & Credenciais Reais (Nao versionar senhas no Git!) ---
+backend/src/appsettings.json
+backend/src/appsettings.Development.json
+backend/src/appsettings.Local.json
+backend/.env
+.env

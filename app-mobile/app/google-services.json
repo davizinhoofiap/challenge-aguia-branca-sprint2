@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "585668359125",
+    "project_id": "projetoaguiabranca-b4c34",
+    "storage_bucket": "projetoaguiabranca-b4c34.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585668359125:android:9d97259278e5a310b8035c",
+        "android_client_info": {
+          "package_name": "com.aguiabranca.inovacao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrNpEnFKswhyOqGwTumMIODJIfCRutH1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585668359125:android:8b8369b727e3588db8035c",
+        "android_client_info": {
+          "package_name": "com.example.projetoguiabranca"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrNpEnFKswhyOqGwTumMIODJIfCRutH1o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

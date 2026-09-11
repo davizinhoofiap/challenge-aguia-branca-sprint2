@@ -1,0 +1,18 @@
+# .NET 8 / C#
+bin/
+obj/
+src/bin/
+src/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+src/.vs/
+.vscode/
+
+# Segredos e configuracoes locais
+src/appsettings.json
+src/appsettings.Development.json
+src/appsettings.Local.json
+.env

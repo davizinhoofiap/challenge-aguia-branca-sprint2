@@ -1,0 +1,76 @@
+// firestore.rules
+// Regras de segurança do Firestore para o app Inovação GAB
+// Deploy: firebase deploy --only firestore:rules
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Funções auxiliares ────────────────────────────────────────────
+
+    // Verifica se o usuário está autenticado
+    function autenticado() {
+      return request.auth != null;
+    }
+
+    // Busca o perfil do usuário logado no Firestore
+    function perfilUsuario() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil;
+    }
+
+    function eOperacional() { return perfilUsuario() == 'OPERACIONAL'; }
+    function eTatico()      { return perfilUsuario() == 'TATICO'; }
+    function eEstrategico() { return perfilUsuario() == 'ESTRATEGICO'; }
+
+    // ── /usuarios/{uid} ───────────────────────────────────────────────
+    match /usuarios/{uid} {
+      // Usuário lê e edita apenas seu próprio documento
+      allow read:   if autenticado() && request.auth.uid == uid;
+      allow create: if autenticado() && request.auth.uid == uid;
+      allow update: if autenticado() && request.auth.uid == uid;
+      allow delete: if false; // nunca deletar usuários pelo app
+    }
+
+    // ── /orientacoes/{id} ─────────────────────────────────────────────
+    match /orientacoes/{id} {
+      // Todos os autenticados leem; apenas Estratégico cria/edita
+      allow read:   if autenticado();
+      allow write:  if autenticado() && eEstrategico();
+    }
+
+    // ── /ideias/{id} ─────────────────────────────────────────────────
+    match /ideias/{id} {
+      // Qualquer autenticado lê
+      allow read: if autenticado();
+
+      // Operacional e Tático criam novas ideias
+      allow create: if autenticado()
+        && (eOperacional() || eTatico())
+        && request.resource.data.autorId == request.auth.uid;
+
+      // O próprio autor pode editar ideias no status CAPTURADA
+      // Tático pode mudar o status (aprovar/reprovar)
+      allow update: if autenticado() && (
+        // Autor edita sua ideia enquanto capturada
+        (resource.data.autorId == request.auth.uid
+          && resource.data.status == 'CAPTURADA')
+        ||
+        // Tático ou Estratégico avaliam
+        (eTatico() || eEstrategico())
+        ||
+        // Qualquer um pode votar (incremento do campo votos)
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['votos']))
+      );
+
+      allow delete: if false;
+    }
+
+    // ── /projetos/{id} ───────────────────────────────────────────────
+    match /projetos/{id} {
+      allow read:   if autenticado();
+      // Apenas Tático e Estratégico criam/editam projetos
+      allow write:  if autenticado() && (eTatico() || eEstrategico());
+      allow delete: if false;
+    }
+  }
+}
