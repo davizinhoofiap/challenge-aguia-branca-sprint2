@@ -18,8 +18,8 @@ Este repositorio unificado contem o ecossistema completo da Sprint 2 dividido em
 Para baixar o projeto na sua maquina, abra o terminal e rode:
 
 ```bash
-git clone https://github.com/SEU_USUARIO/sprint2-aguia-branca.git
-cd sprint2-aguia-branca
+git clone https://github.com/davizinhoofiap/challenge-aguia-branca-sprint2.git
+cd challenge-aguia-branca-sprint2
 ```
 
 ---
