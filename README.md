@@ -1,74 +1,148 @@
-﻿# Challenge Grupo Aguia Branca - Sprint 2
+# Challenge Grupo Aguia Branca - Sprint 2
 FIAP - Engenharia de Software
 
 Alunos: Davi, Victor e Fernando
 
 ---
 
-## E ai, professor! Tudo bem?
+## E ai, pessoal! Guia rapido de configuracao e execucao
 
-Aqui esta a nossa entrega da Sprint 2 do Challenge do Grupo Aguia Branca. Pegamos todos os feedbacks que o senhor passou na Sprint 1 e refatoramos o projeto inteiro:
-
-1. **Adeus cores apagadas:** Tiramos aquele tema dinamico do Android que desbotava e deixamos a interface com contraste alto, bordas nitidas e o azul oficial da Aguia Branca.
-2. **Nova arquitetura de verdade:** Separamos o codigo em camadas (Controllers, Services, Repositories, ViewModels e DTOs) respeitando o SRP.
-3. **APK 100% liberado:** O arquivo `App_Inovacao_AguiaBranca.apk` foi gerado sem a flag `TEST_ONLY`, pronto para instalar direto no seu aparelho.
-4. **Backend e Nuvem:** Criamos uma API REST completa em C# .NET 8 conectada direto no MongoDB Atlas (`InovacaoAguiaBrancaDB`) com pontuacao de viabilidade por IA.
+Este repositorio unificado contem o ecossistema completo da Sprint 2 dividido em duas pastas principais:
+- `/backend`: API REST em C# .NET 8 com integracao ao MongoDB Atlas na nuvem e motor de analise de viabilidade por IA.
+- `/app-mobile`: Aplicativo Android nativo em Kotlin com Jetpack Compose, Material Design 3 e arquitetura MVVM + Hilt.
 
 ---
 
-## Como testar em 2 passos rapidos
+## 1. Como Clonar o Repositorio
 
-### 1. Subir o Backend (1 clique)
-Para facilitar sua correcao sem precisar digitar comandos no terminal:
-- De dois cliques no arquivo `iniciar_backend.bat` aqui na raiz.
-- Ele ja acha o .NET 8, sobe o servidor na porta 5000 e conecta direto no cluster do MongoDB Atlas na nuvem.
-- Se quiser ver os endpoints e testar pelo navegador, o Swagger fica em: `http://localhost:5000`
+Para baixar o projeto na sua maquina, abra o terminal e rode:
 
-### 2. Abrir o App Android
-- **No Emulador:** Abra a pasta `mobile` no Android Studio e de Play (o app ja aponta para `http://10.0.2.2:5000/api/` por padrao).
-- **No Celular fisico:** Conecte o USB com depuracao ativa, rode `adb reverse tcp:5000 tcp:5000` e instale o APK `App_Inovacao_AguiaBranca.apk`.
+```bash
+git clone https://github.com/SEU_USUARIO/sprint2-aguia-branca.git
+cd sprint2-aguia-branca
+```
 
 ---
 
-## Contas de Teste (Senha para todas: 123456)
+## 2. Configuracao do MongoDB Atlas na Nuvem
 
-Criamos uma conta especial de Lider para o senhor avaliar tudo com acesso total:
+Para que ninguem da equipe precise subir banco local ou restaurar dump no MongoDB Compass, usamos o cluster centralizado no Atlas:
 
-| Perfil | E-mail | Senha | O que testar com essa conta |
+1. **Liberar IP no Atlas (Network Access):**
+   - Acesse o painel do MongoDB Atlas > `Network Access`.
+   - Clique em `Add IP Address` e adicione o IP da sua conexao (ou configure `0.0.0.0/0` para permitir acesso de qualquer lugar durante os testes).
+2. **Usuario da Equipe (Database Access):**
+   - No Atlas, va em `Database Access` e utilize o usuario de leitura/escrita criado para o projeto.
+   - NUNCA suba senhas ou credenciais reais para o Git! As credenciais reais sao enviadas diretamente no chat privado da equipe.
+
+---
+
+## 3. Configurando e Rodando o Backend (.NET 8)
+
+### Onde colar a Connection String do Mongo Atlas:
+1. Va ate a pasta `backend/src/`.
+2. Duplique o arquivo de exemplo `appsettings.Example.json` e renomeie a copia para `appsettings.json` (este arquivo ja esta protegido no `.gitignore` para nao vazar senhas).
+3. Cole a string de conexao real no campo `ConnectionString`:
+   ```json
+   "MongoDbSettings": {
+     "ConnectionString": "mongodb+srv://<USUARIO>:<SENHA>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority",
+     "DatabaseName": "InovacaoAguiaBrancaDB"
+   }
+   ```
+   *(Obs: Voce tambem pode definir a variavel de ambiente `MONGODB_URI` se preferir).*
+
+### Como Iniciar o Servidor:
+
+- **Opcao 1 (1 clique no Windows):**
+  De dois cliques no arquivo `iniciar_backend.bat` na raiz do projeto. Ele verifica o .NET 8, cria o `appsettings.json` automaticamente se faltar e sobe a API.
+
+- **Opcao 2 (Via Terminal):**
+  ```bash
+  cd backend/src
+  dotnet run --urls "http://0.0.0.0:5000"
+  ```
+
+### Como testar se subiu:
+- Abra o navegador em: `http://localhost:5000` ou `http://localhost:5000/swagger`
+- Se o Swagger carregar com os endpoints de Autenticacao, Ideias, Projetos e Dashboard, o backend esta 100% ativo e conectado a nuvem.
+
+### Como ver os dados no MongoDB Compass (Opcional):
+- Abra o MongoDB Compass.
+- Cole a mesma string de conexao do Atlas (`mongodb+srv://...`).
+- Clique em `Connect` para visualizar as collections `Usuarios`, `Ideias`, `Projetos` e `Estrategias`.
+
+---
+
+## 4. Configurando e Rodando o App Android (`/app-mobile`)
+
+### Passo a passo:
+1. Abra o **Android Studio**.
+2. Clique em **File > Open** e selecione a pasta `app-mobile` deste repositorio.
+3. Aguarde o Android Studio realizar a sincronizacao automatica do Gradle (Sync Project with Gradle Files).
+
+### Ajuste do IP da API (Centralizado em ApiConfig.kt):
+O endereco do backend esta centralizado no arquivo:
+`app-mobile/app/src/main/java/com/example/projetoguiabranca/data/network/ApiConfig.kt`
+
+- **Se rodar no Emulador do Android Studio (PC):**
+  Mantenha o padrao: `http://10.0.2.2:5000/api/` (o IP `10.0.2.2` e o alias do emulador para o localhost da sua maquina).
+- **Se rodar no Celular Fisico via Cabo USB (Recomendado):**
+  Conecte o aparelho com a depuracao USB ativada e rode no terminal do PC:
+  ```bash
+  adb reverse tcp:5000 tcp:5000
+  ```
+  O app tem fallback automatico e se conecta a `127.0.0.1:5000` sem precisar mudar nada.
+- **Se rodar no Celular Fisico via Wi-Fi:**
+  Descubra o IP local do seu computador no terminal (`ipconfig` -> Endereco IPv4, ex: `192.168.1.15`).
+  Altere `BASE_URL` em `ApiConfig.kt` para: `http://192.168.1.15:5000/api/`
+  *(Importante: celular e computador devem estar na mesma rede Wi-Fi).*
+
+### Executar o App:
+- Selecione o dispositivo (emulador ou aparelho fisico) no topo do Android Studio e clique em **Run 'app' (Play verde)**.
+- Se preferir instalar direto sem abrir o Android Studio, o executavel oficial pronto esta na raiz: `App_Inovacao_AguiaBranca.apk`.
+
+---
+
+## 5. Contas de Teste Prontas (Senha para todas: 123456)
+
+O banco ja vem populado com usuarios de cada nivel hierarquico para testes imediatos:
+
+| Perfil | E-mail | Senha | Funcionalidade |
 | :--- | :--- | :--- | :--- |
-| **Professor FIAP** | `professor@fiap.com.br` | `123456` | Acesso total de Lider. Ver Dashboard executivo com ROI, avaliar ideias e acompanhar metricas. |
-| **Operador** | `operador@aguiabranca.com.br` | `123456` | Cadastrar ideias na operacao. Ao enviar, a IA ja calcula o Score (0 a 100) na hora. |
+| **Professor FIAP** | `professor@fiap.com.br` | `123456` | Acesso total de Lider executivo. Dashboard com ROI consolidado, esteira de aprovacao e projetos. |
+| **Operador** | `operador@aguiabranca.com.br` | `123456` | Cadastro de ideias na operacao. Calculo automatico de viabilidade e Score por IA na hora. |
 | **Gestor** | `gestor@aguiabranca.com.br` | `123456` | Esteira de avaliacao. Pode aprovar ou reprovar ideias e criar projetos. |
-| **Lider** | `lider@aguiabranca.com.br` | `123456` | Visao estrategica corporativa e graficos financeiros do Dashboard. |
+| **Lider** | `lider@aguiabranca.com.br` | `123456` | Visao macro, graficos financeiros e acompanhamento de inovacao corporativa. |
 
 ---
 
-## Roteiro rapido para correcao
-
-1. **Crie uma ideia com o Operador:**
-   - Entre com `operador@aguiabranca.com.br` / `123456`.
-   - Va em "Nova Ideia" e mande uma proposta operacional (ex: "Sensores de telemetria nos freios").
-   - Na tela inicial, veja que a ideia ja aparece em "Minhas Ideias" com o Score de IA calculado.
-2. **Aprove com o Gestor:**
-   - Clique na portinha no canto superior direito para sair da conta.
-   - Entre com `gestor@aguiabranca.com.br` / `123456`.
-   - Va em "Avaliar Ideias", abra a ideia que acabou de criar e clique em "Aprovar".
-   - Veja que ela ganha destaque verde e vai direto para a aba "Aprovadas".
-3. **Veja o impacto no Dashboard:**
-   - Faca logout e entre com `professor@fiap.com.br` (ou `lider@aguiabranca.com.br`).
-   - Abra a tela "Dashboard": confira os indicadores de ROI medio (280%), reducao de custos e lucro obtido consolidados.
-
----
-
-## Estrutura dos arquivos
+## 6. Estrutura do Repositorio
 
 ```
-Sprint2_Entrega/
-├── iniciar_backend.bat            # Inicia o servidor .NET 8 com 1 clique
+sprint2-aguia-branca/
+├── .gitignore                     # Protecao contra cache de build e arquivos sensiveis
+├── .env.example                   # Template seguro das variaveis de ambiente
+├── README.md                      # Roteiro completo de execucao
+├── iniciar_backend.bat            # Script para subir o backend com 1 clique
 ├── App_Inovacao_AguiaBranca.apk   # APK oficial sem flag TEST_ONLY
-├── README.md                      # Este guia rapido
 │
-├── backend/                       # API REST em C# .NET 8 (MongoDB Atlas + JWT + IA)
-├── mobile/                        # App Android nativo em Kotlin (Jetpack Compose + Hilt + Retrofit)
+├── backend/                       # API REST C# .NET 8
+│   ├── .env.example               # Exemplo de variaveis de ambiente
+│   ├── .gitignore                 # Ignora bin, obj e appsettings.json
+│   └── src/
+│       ├── appsettings.Example.json  # Template de configuracao sem senhas
+│       ├── Controllers/           # Auth, Ideias, Projetos, Dashboard, Estrategias
+│       ├── Services/              # Regras de negocio e analise heuristica/Gemini IA
+│       ├── Repositories/          # Conexao MongoDB Atlas e DatabaseSeeder
+│       └── Program.cs             # Inicializacao com suporte a CORS, JWT e Swagger
+│
+├── app-mobile/                    # App Android Nativo em Kotlin
+│   ├── .gitignore                 # Ignora .gradle, build e .idea
+│   ├── build.gradle.kts           # Configuracao do Gradle 8.13
+│   └── app/src/main/java/com/example/projetoguiabranca/
+│       ├── data/network/ApiConfig.kt # IP da API centralizado para emulador e celular
+│       ├── ui/screen/             # Telas em Jetpack Compose (Login, Home, Gestao, etc.)
+│       └── ...
+│
 └── docs/                          # Documentacao complementar de arquitetura e endpoints
 ```
