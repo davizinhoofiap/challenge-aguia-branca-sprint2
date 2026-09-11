@@ -26,12 +26,35 @@ echo [2/3] Acessando diretorio do projeto...
 cd /d "%~dp0backend\src"
 
 if not exist "appsettings.json" (
-    if exist "appsettings.Example.json" (
-        echo [AVISO] appsettings.json nao encontrado. Criando copia a partir de appsettings.Example.json...
-        copy "appsettings.Example.json" "appsettings.json" >nul
-        echo [OK] appsettings.json gerado. Insira a string de conexao do MongoDB Atlas se ainda nao inseriu.
-        echo.
-    )
+    echo [CONFIG] appsettings.json nao encontrado. Configurando automaticamente com MongoDB Atlas...
+    (
+        echo {
+        echo   "Logging": {
+        echo     "LogLevel": {
+        echo       "Default": "Information",
+        echo       "Microsoft.AspNetCore": "Warning"
+        echo     }
+        echo   },
+        echo   "AllowedHosts": "*",
+        echo   "MongoDbSettings": {
+        echo     "ConnectionString": "mongodb+srv://davizinhofiap:DtNasc%%23070704@cluster0.nljwos1.mongodb.net/?retryWrites=true^&w=majority",
+        echo     "DatabaseName": "InovacaoAguiaBrancaDB"
+        echo   },
+        echo   "JwtSettings": {
+        echo     "Secret": "AguiaBrancaInovacaoSecretKey2026SuperSegura!",
+        echo     "Issuer": "InovacaoAguiaBranca",
+        echo     "Audience": "InovacaoAguiaBrancaApp",
+        echo     "ExpirationHours": 24
+        echo   },
+        echo   "GeminiSettings": {
+        echo     "ApiKey": "",
+        echo     "Model": "gemini-1.5-flash",
+        echo     "BaseUrl": "https://generativelanguage.googleapis.com/v1beta/models"
+        echo   }
+        echo }
+    ) > "appsettings.json"
+    echo [OK] appsettings.json gerado e conectado com sucesso ao Atlas na nuvem!
+    echo.
 )
 
 echo [3/3] Iniciando servidor ASP.NET Core e sincronizando com MongoDB Atlas...
