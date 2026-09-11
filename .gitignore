@@ -8,6 +8,7 @@ Thumbs.db
 *.swp
 *~
 .vscode/
+*.zip
 
 # --- Android Studio / Gradle (/app-mobile) ---
 .gradle/
