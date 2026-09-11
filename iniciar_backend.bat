@@ -9,7 +9,7 @@ echo.
 echo [1/3] Verificando ambiente .NET SDK 8...
 where dotnet >nul 2>nul
 if %errorlevel% neq 0 (
-    set "PATH=%LocalAppData%\Microsoft\dotnet;%PATH%"
+    set "PATH=%LocalAppData%\Microsoft\dotnet;%ProgramFiles%\dotnet;%ProgramFiles(x86)%\dotnet;%PATH%"
 )
 
 where dotnet >nul 2>nul
