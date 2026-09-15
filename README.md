@@ -1,15 +1,13 @@
 # Challenge Grupo Aguia Branca - Sprint 2
-FIAP - Engenharia de Software
+FIAP
 
 Alunos: Davi, Victor e Fernando
 
 ---
 
-## E ai, professor! Tudo certo?
+## entrega completa da Sprint 2 do Challenge do Grupo Aguia Branca. Refatoramos todo o projeto para atender 100% dos requisitos do edital, conectando o aplicativo nativo em Kotlin a um backend real em C# .NET 8 com banco NoSQL no MongoDB Atlas e analise inteligente de viabilidade por IA.
 
-Aqui esta a entrega completa da Sprint 2 do Challenge do Grupo Aguia Branca. Refatoramos todo o projeto para atender 100% dos requisitos do edital, conectando o aplicativo nativo em Kotlin a um backend real em C# .NET 8 com banco NoSQL no MongoDB Atlas e analise inteligente de viabilidade por IA.
-
-Para facilitar sua correcao e permitir que o senhor teste tudo na sua maquina em menos de 2 minutos sem precisar criar conta ou configurar banco local, deixamos tudo pre-configurado na nuvem.
+Para facilitar  correcao e permitir que teste tudo na sua maquina em menos de 2 minutos sem precisar criar conta ou configurar banco local, deixamos tudo pre-configurado na nuvem.
 
 ---
 
