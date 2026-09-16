@@ -27,14 +27,16 @@ public class DatabaseSeeder
             // 1. Seed de Usuários no Atlas (Perfis Corporativos Oficiais do Desafio Águia Branca)
             if (_context.Usuarios != null)
             {
-                // Remove registros não corporativos se existirem
+                // Remove registros não corporativos ou legados se existirem
                 await _context.Usuarios.DeleteManyAsync(u => 
                     u.Nome == "VictorH" || 
                     u.Nome == "FernandoP" || 
                     u.Nome == "Davi Silva" || 
+                    u.Nome == "Professor FIAP" ||
                     u.Email == "victorh@aguiabranca.com.br" || 
                     u.Email == "fernandop@aguiabranca.com.br" || 
-                    u.Email == "davi@aguiabranca.com.br"
+                    u.Email == "davi@aguiabranca.com.br" ||
+                    u.Email == "professor@fiap.com.br"
                 );
 
                 var usuariosDesejados = new List<Usuario>
@@ -69,17 +71,6 @@ public class DatabaseSeeder
                         SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                         Cargo = "Diretor de Inovação e Frota",
                         Divisao = "Comércio",
-                        Perfil = "Lider",
-                        DataCriacao = DateTime.UtcNow
-                    },
-                    new()
-                    {
-                        Id = "66db5e110000000000000004",
-                        Nome = "Professor FIAP",
-                        Email = "professor@fiap.com.br",
-                        SenhaHash = BCrypt.Net.BCrypt.HashPassword("123456"),
-                        Cargo = "Avaliador da Banca",
-                        Divisao = "Diretoria de Inovacao",
                         Perfil = "Lider",
                         DataCriacao = DateTime.UtcNow
                     }

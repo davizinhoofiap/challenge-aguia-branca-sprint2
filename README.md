@@ -42,10 +42,9 @@ Ja deixamos o banco na nuvem populado com usuarios para cada papel do edital:
 
 | Perfil | E-mail | Senha | O que testar com essa conta |
 | :--- | :--- | :--- | :--- |
-| **Professor FIAP** | `professor@fiap.com.br` | `123456` | Acesso executivo de Lider. Visualizacao do Dashboard com ROI (280%), reducao de custos, esteira de aprovacao e projetos. |
 | **Operador** | `operador@aguiabranca.com.br` | `123456` | Cadastro de ideias da operacao. O Score e parecer tecnico de viabilidade sao calculados na hora pela IA. |
 | **Gestor** | `gestor@aguiabranca.com.br` | `123456` | Esteira de triagem. Avaliar, aprovar ou reprovar ideias e converter ideias aprovadas em projetos. |
-| **Lider** | `lider@aguiabranca.com.br` | `123456` | Acompanhamento estrategico, indicadores consolidados e graficos por pilar corporativo. |
+| **Lider** | `lider@aguiabranca.com.br` | `123456` | Acesso executivo de Lider. Visualizacao do Dashboard com ROI (280%), reducao de custos e graficos estrategicos. |
 
 ---
 
@@ -61,7 +60,7 @@ Ja deixamos o banco na nuvem populado com usuarios para cada papel do edital:
    - Va em "Avaliar Ideias", abra a ideia criada e clique em "Aprovar".
    - Veja que a ideia ganha destaque verde e se move para a aba "Aprovadas".
 3. **Consulte o impacto no Dashboard Executivo:**
-   - Faca logout e entre com a conta `professor@fiap.com.br` / `123456`.
+   - Faca logout e entre com a conta `lider@aguiabranca.com.br` / `123456`.
    - Acesse o "Dashboard" e veja os indicadores de ROI medio consolidado, lucro gerado, reducao de custos e o grafico de retorno por estrategia sincronizados direto do MongoDB Atlas.
 
 ---
